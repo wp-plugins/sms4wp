@@ -1,0 +1,131 @@
+<link rel="stylesheet" href="<?php echo SMS4WP_INC_VIEW_CSS_URL; ?>/sms4wp.css" />
+
+<div class="wrap">
+<h2>
+<?php _e('전송내역') ?>	<a href="admin.php?page=sms4wp-send" class="add-new-h2">New Message</a>
+</h2>
+
+<ul class="subsubsub">
+	<li class="all"><a href="admin.php?page=sms4wp-send-list" class="current"><?php _e('모두') ?> <span class="count">(<?php echo $list['total']; ?>)</span></a> |</li>
+	<li class="administrator"><a href="admin.php?page=sms4wp-send-list&amp;sf=se_result_code&amp;ss=200"><?php _e('성공') ?> <span class="count">(<?php echo $list['successCnt']; ?>)</span></a> | </li>
+	<li class="administrator"><a href="admin.php?page=sms4wp-send-list&amp;sf=se_result_code&amp;ss="><?php _e('실패') ?> <span class="count">(<?php echo $list['failedCnt']; ?>)</span></a></li>
+</ul>
+<form action="admin.php" method="get">
+
+<p class="search-box">
+	<label class="screen-reader-text" for="user-search-input"><?php _e('검색') ?>:</label>
+	<input type="search" id="user-search-input" name="s" value="">
+	<input type="hidden" name="paged" value="<?php echo $_REQUEST['paged']; ?>">
+	<input type="hidden" name="sf" value="<?php echo $_REQUEST['sf']; ?>">
+	<input type="hidden" name="ss" value="<?php echo $_REQUEST['ss']; ?>">
+	<input type="submit" name="" id="search-submit" class="button" value="<?php _e('검색') ?>"></p>
+
+	<input type="hidden" id="_wpnonce" name="_wpnonce" value="<?php echo $delete_nonce; ?>">
+	<input type="hidden" name="_wp_http_referer" value="admin.php?page=sms4wp-send-list">	
+	<input type="hidden" name="page" value="sms4wp-send-list">
+
+	<div class="tablenav top">
+
+	<div class="alignleft actions bulkactions">
+		<select name="action">
+			<option value="-1" selected="selected"><?php _e('일괄작업') ?></option>
+			<option value="delete"><?php _e('삭제') ?></option>
+		</select>
+
+		<input type="submit" name="" id="doaction" class="button action button-submitaction" value="Apply">
+	</div>
+	<div class="tablenav-pages">
+		<?php echo $links; ?>
+	</div>
+
+<table class="wp-list-table widefat fixed users">
+	<thead>
+	<tr>
+		<th scope="col" id="cb" class="manage-column column-cb check-column" style=""><label class="screen-reader-text" for="cb-select-all-1">Select All</label><input id="cb-select-all-1" type="checkbox"></th>
+		<th scope="col" id="username" class="manage-column column-role sortable" style=""><span><?php _e('이름') ?></span><span class="sorting-indicator"></span></th>
+		<th scope="col" id="name" class="manage-column column-num num" style=""><span><?php _e('수신자번호') ?></span><span class="sorting-indicator"></span></th>
+		<th scope="col" id="name" class="manage-column column-num num" style=""><span><?php _e('발신번호') ?></span><span class="sorting-indicator"></span></th>
+		<th scope="col" id="email" class="manage-column column-visible" style=""><span><?php _e('그룹') ?></span><span class="sorting-indicator"></span></th>
+		<th scope="col" id="posts" class="manage-column column-date" style=""><?php _e('전송일시') ?></th>
+		<th scope="col" id="role" class="manage-column column-rating" style=""><?php _e('예약') ?></th>
+		<th scope="col" id="role" class="manage-column column-rating" style=""><?php _e('전송결과') ?></th>
+		<th scope="col" id="role" class="manage-column column-role" style=""><?php _e('메시지') ?></th>
+		<th scope="col" class="manage-column column-rating" style=""><?php _e('종류') ?></th>
+	</tr>
+	</thead>
+
+	<tfoot>
+	<tr>
+		<th scope="col" class="manage-column column-cb check-column" style=""><label class="screen-reader-text" for="cb-select-all-2">Select All</label><input id="cb-select-all-2" type="checkbox"></th>
+		<th scope="col" class="manage-column column-role sortable" style=""><span><?php _e('이름') ?></span><span class="sorting-indicator"></span></th>
+		<th scope="col" class="manage-column column-num num" style=""><span><?php _e('수신자번호') ?></span><span class="sorting-indicator"></span></th>
+		<th scope="col" class="manage-column column-num num" style=""><span><?php _e('발신번호') ?></span><span class="sorting-indicator"></span></th>
+		<th scope="col" class="manage-column column-visible" style=""><span><?php _e('그룹') ?></span><span class="sorting-indicator"></span></th>
+		<th scope="col" class="manage-column column-date" style=""><?php _e('전송일시') ?></th>	
+		<th scope="col" class="manage-column column-rating" style=""><?php _e('예약') ?></th>
+		<th scope="col" class="manage-column column-rating" style=""><?php _e('전송결과') ?></th>
+		<th scope="col" class="manage-column column-role" style=""><?php _e('메시지') ?></th>
+		<th scope="col" class="manage-column column-rating" style=""><?php _e('종류') ?></th>
+	</tr>
+	</tfoot>
+
+	<tbody id="the-list" data-wp-lists="list:user">
+	<?php
+	$send = $list['send'];
+	// print_r( $send );
+
+	for ( $c = 0; $c < count($send); $c++ ) { 
+		$class = 'alternate';
+		if ( !($c%2) )
+			$class = '';
+
+		$group_name  = ''; // 그룹명
+		$reservation = $send[$c]['se_reservation_use'] ? $send[$c]['se_reservation_date'] : 'no';
+		$send_result = $send[$c]['se_result_code'] == 200 ? '성공' : '실패';
+
+		$receiver = array();
+		if ( $send[$c]['re_id'] ) {
+			$receiver   = sms4wp_get_receiver( $send[$c]['re_id'] );
+			$group_name = $groups[$receiver['gr_id']]['gr_name'];
+		}
+	?>
+	<tr id="user-1" class="<?php echo $class; ?>">
+		<th scope="row" class="check-column"><label class="screen-reader-text" for="cb-select-1">Select <?php echo $send[$c]['ID']; ?></label><input type="checkbox" name="id[]" id="send_<?php echo $send[$c]['ID']; ?>" class="checkbox-list" value="<?php echo $send[$c]['ID']; ?><"></th>
+		<td class="username column-role"> <strong><a href="admin.php?page=sms4wp-receivers&amp;action=edit&amp;id=<?php echo $receiver['ID']; ?>"><?php echo $receiver['re_name']; ?></a></strong></td>
+		<td class="role column-num num"><?php echo $send[$c]['se_receiver_number']; ?></td>
+		<td class="role column-num num"><?php echo $send[$c]['se_send_number']; ?></td>
+		<td class="role column-visible"><?php echo $group_name; ?></td>
+		<td class="role column-date"><?php echo substr( $send[$c]['se_date'], 0, 10 ); ?></td>
+		<td class="role column-rating"><?php echo $reservation; ?></td>
+		<td class="role column-rating"><?php echo $send_result; ?></td>
+		<td class="role column-role"><?php echo $send[$c]['se_message']; ?></td>
+		<td class="role column-rating"><?php echo $send[$c]['se_type']; ?></td>
+	</tr>
+	<?php
+	}
+	?>
+	
+</tbody>
+</table>
+
+	<div class="tablenav bottom">
+
+		<div class="alignleft actions bulkactions">
+			<select name="action">
+				<option value="-1" selected="selected"><?php _e('일괄작업') ?></option>
+				<option value="delete"><?php _e('삭제') ?></option>
+			</select>
+			<input type="submit" name="" id="doaction2" class="button action button-submitaction" value="Apply">
+		</div>
+
+		<div class="tablenav-pages">
+		<?php echo $links; ?>
+	</div>
+		<br class="clear">
+	</div>
+</form>
+
+<br class="clear">
+</div>
+
+<script type="text/javascript" src="<?php echo SMS4WP_INC_VIEW_JS_URL; ?>/jquery.common.js"></script>
