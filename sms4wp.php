@@ -3,7 +3,7 @@
 Plugin Name: SMS for WordPress (sms4wp)
 Plugin URI: https://sms4wp.com
 Description: Send SMS messages from WordPress!
-Version: 0.8.4
+Version: 0.8.5
 Author: sms4wp.com
 Author URI: https://sms4wp.com/
 */
