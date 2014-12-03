@@ -4,20 +4,16 @@ Donate link: http://sms4wp.com/
 Tags: message, notification, register, send, sms, sms panel, sms subscribe, subscribe, webservice, wordpress
 Requires at least: 3.8
 Tested up to: 4.0.1
-Stable tag: 0.8.4
+Stable tag: 0.8.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-SMS for WordPress (sms4wp) 플러그인으로 워드프레스에서 문자메시지를 전송할 수 있습니다. 
+SMS for WordPress (sms4wp) 플러그인으로 워드프레스에서 문자메시지를 전송할 수 있습니다. SMS/LMS/MMS를 기본으로 전송하며, 즉시/예약전송이 가능하며, 개인별 전송은 물론 그룹전송이 가능합니다. 수신자를 그룹으로 분류하여 관리하고, 문자 템플릿을 관리하여 편리하게 문자를 전송할 수 있습니다. 
 
 == Description ==
 SMS for WordPress (sms4wp) 플러그인으로 워드프레스에서 문자메시지를 전송할 수 있습니다. SMS/LMS/MMS를 기본으로 전송하며, 즉시/예약전송이 가능하며, 개인별 전송은 물론 그룹전송이 가능합니다. 수신자를 그룹으로 분류하여 관리하고, 문자 템플릿을 관리하여 편리하게 문자를 전송할 수 있습니다. 
 
 문자를 전송하기 위하여, sms4wp.com 서비스에 가입하여, 포인트를 충전해야합니다. 
-
-= 지원언어 =
-* Korean (한국어)
-* English (영어)
 
 = 특징 =
 * SMS/LMS/MMS 등 다양한 문자메시지를 전송할 수 있습니다.
@@ -87,6 +83,10 @@ SMS for WordPress (sms4wp) 플러그인으로 워드프레스에서 문자메시
 4. 문자메시지 전송내역 
 
 == Changelog ==
+
+= 0.8.5 =
+* 주석 삭제
+* 변수에 대한 정보를 덤프 삭제
 
 = 0.8.4 =
 * 엑셀파일을 CSV로 변환하여 다량의 수신자 목록 불러오기 기능 추가
